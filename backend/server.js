@@ -1,51 +1,20 @@
+/* 
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const serverFunction = (req, res) => {
 
-const server = http.createServer((req, res) => {
+	const errorHTML = 'everything is fine';
+    
+	// let filePath = path.resolve(__dirname + '/../frontend' + req.url);
 
-	const errorHTML = `
-		
-	<!DOCTYPE html>
-	<html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="preconnect" href="https://fonts.googleapis.com"> 
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
-		<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
-		<style>
-			body{
-				padding: 0; margin: 0;
-				font-family: 'Montserrat', sans-serif;
-				font-weight: 800;
-				background-color: #4343F9;
-				color: #fff;
-			}
-			#root{
-				width: 100%;
-				height: 100vh;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				font-size: 21px;
-			}
-		</style>
-		<title>Not here</title>
-	</head>
-	<body>
-		<div id="root">Rise your gaze to the sky<br/>than a bit back to the URL bar<br/>and check that link again</div>
-	</body>
-	</html>
-	
-	`;
+	let filePath = path.resolve(`${__dirname}/../frontend${req.url}`);
     
-	let filePath = path.resolve(__dirname + '/../frontend' + req.url);
-    
+
+
 	fs.access(filePath, fs.constants.R_OK, (err) => {
 	if(err){
-		res.statusCode = 404;
+		res.statusCode = 200;
 		res.end(errorHTML);
 	}else{
 		if(fs.statSync(filePath).isDirectory()) {
@@ -56,14 +25,42 @@ const server = http.createServer((req, res) => {
 				res.statusCode = 500;
 				res.end(errorHTML);
 			} else {
+				console.log('index html is sent')
 				res.end(data);
 			}
 		});
 	}
 	});
-});
+};
 
-server.listen(9000, "127.0.0.1", () => {
+const server = http.createServer(serverFunction);
+
+const port = 9000;
+const IPAddress = '127.0.0.1';
+const listenFunction = () => {
     const addr = server.address();
 		console.log(`http://${addr.address}:${addr.port}`);
+		console.log(`this is fun...`);
+};
+
+server.listen(port, IPAddress, listenFunction); 
+*/
+
+
+const express = require('express');
+const path = require('path');
+const app = express();
+
+const absolutePathIndex = path.join(`${__dirname}/../frontend/index.html`);
+const absolutePathPub = path.join(`${__dirname}/../frontend/pub`);
+
+
+app.use('/pub', express.static(absolutePathPub));
+
+app.get('/', (req, res) => {
+	res.sendFile(absolutePathIndex);
+});
+
+app.listen(9000, () => {
+	
 });
