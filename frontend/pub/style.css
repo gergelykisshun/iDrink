@@ -33,11 +33,35 @@ select {
   
 /*CSS RESET OVER*/
 
-body {
-    font-family: 'Montserrat', sans-serif;
-    background-color: #370617;
+:root {
+    --bg-main: #370617;
+    --bg-secondary: #f48c06;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--bg-main);
+}
+
+/* NAVBAR */
+
+.navbar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    left: 0;
+    width: 5rem;
+    height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+
+/* CONTAINER AND CARDS */
 
 .container {
     display: flex;
@@ -49,7 +73,7 @@ body {
 .container h1 {
     padding: 20px;
     font-size: 60px;
-    color: #f48c06;
+    color: var(--bg-secondary);
 }
 
 .beer-cards {
@@ -66,8 +90,8 @@ body {
     gap: 5px;
     padding: 20px;
     width: 100%;
-    background-color: #f48c06;
-    color: #370617;
+    background-color: var(--bg-secondary);
+    color: var(--bg-main);
     /* box-shadow: 0 0 10px #370617; */
     cursor: pointer;
     transition: all 0.2s;
@@ -75,5 +99,5 @@ body {
 
 .beer-card:hover {
     transform: scale(1.2);
-    box-shadow: 0 0 20px #f48c06;
+    box-shadow: 0 0 20px var(--bg-secondary);
 }
