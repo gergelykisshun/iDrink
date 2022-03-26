@@ -9,6 +9,17 @@ const navbarHTML = (recNavAnchorsHTML) => {
     `;
 };
 
+const welcomeHTML = () => {
+    return `
+    <section class='welcome-section container'>
+        <div>
+            <h1>Welcome to iDrink</h1>
+            <p>Top 10 Drinks for You to enjoy!</p>
+        </div>
+    </section>
+    `
+};
+
 const containerHTML = (sectionName, recBeerHTML) => {
     return `
     <section id="${sectionName}" class="container">
@@ -35,38 +46,38 @@ const cardHTML = (beerList) => {
 const navAnchorsHTML = () => {
     const anchorList = [
         {
+            link: '#',
+            title: 'iDrink',
+            icon: '<i class="material-icons">double_arrow</i>'
+        },
+        {
             link: '#Beers',
             title: 'Beers',
-            iconClass: 'fas fa-beer-mug-empty'
+            icon: '<i class="material-icons">sports_bar</i>'
         },
         {
             link: '#Wine',
             title: 'Wine',
-            iconClass: 'fas fa-wine-glass'
+            icon: '<i class="fas fa-wine-glass"></i>'
         },
         {
             link: '#Spirits',
             title: 'Spirits',
-            iconClass: 'fas fa-whiskey-glass'
-        },
-        {
-            link: '#Cocktails',
-            title: 'Cocktails',
-            iconClass: 'fas fa-martini-glass'
+            icon: '<i class="material-icons">liquor</i>'
         },
         {
             link: '#Quotes',
             title: 'Quotes',
-            iconClass: 'fas fa-crown'
+            icon: '<i class="fas fa-crown"></i>'
         }
 
     ];
 
-    return anchorList.map(a => {
+    return anchorList.map((a,i) => {
         return `
-        <a href="${a.link}">
+        <a class="${i === 0 ? 'home' : ''}" href="${a.link}">
             <span>${a.title}</span>
-            <i class="${a.iconClass}"></i>
+            ${a.icon}
         </a>
         `
     }).join('');
@@ -82,6 +93,16 @@ const getAllData = async () => {
     return result;
 };
 
+//HANDLERS
+
+const cardGoogleSearch = (e) => {
+    console.log(e.target);
+    if (e.target.classList.contains('beer-card')){
+        window.open(`https://www.google.com/search?q=${Array.from(e.target.children).map(child => child.textContent === '-Theoden' ? 'Theoden' : child.textContent).join(' ')}`, '_blank');
+    }
+};
+
+
 
 
 
@@ -94,7 +115,13 @@ const init = async () => {
 
     //Create HTML
     root.insertAdjacentHTML('beforeend', navbarHTML(navAnchorsHTML()));
+    root.insertAdjacentHTML('beforeend', welcomeHTML());
+
     root.insertAdjacentHTML('beforeend', allData.map(section => containerHTML(section.id, cardHTML(section.cards))).join(''));
+
+
+    //Event Listeners
+    document.addEventListener('click', cardGoogleSearch);
 
 
 };

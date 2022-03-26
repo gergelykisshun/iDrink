@@ -36,6 +36,9 @@ select {
 :root {
     --bg-main: #370617;
     --bg-secondary: #f48c06;
+    --bg-secondary-darker: #E85D04;
+    --bg-secondary-darkest: #DC2F02;
+    --transition-speed : all 0.3s ease;
 }
 
 html {
@@ -55,10 +58,104 @@ body {
     align-items: center;
     position: fixed;
     left: 0;
+    bottom: 0;
     width: 5rem;
     height: 100vh;
     background-color: var(--bg-secondary);
+    overflow: hidden;
+    transition: var(--transition-speed);
 }
+
+.navbar:hover {
+    width: 12rem;
+}
+
+.navbar:hover .nav-list a {
+    width: 12rem;
+}
+
+.navbar:hover .nav-list a span {
+    position: unset;
+    right: unset;
+    opacity: 1;
+}
+
+.nav-list .home i {
+    transition: var(--transition-speed);
+}
+
+.navbar:hover .nav-list .home i {
+    transform: rotate(-180deg);
+}
+
+.nav-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-list a {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    height: 5rem;
+    width: 5rem;
+    transition: var(--transition-speed);
+}
+
+.nav-list a:hover {
+    background-color: var(--bg-secondary-darker);
+}
+
+.nav-list .home:hover {
+    background-color: var(--bg-secondary-darkest);
+}
+
+
+.nav-list a i {
+    font-size: 35px;
+    color: var(--bg-main);
+}
+
+.nav-list .home {
+    background-color: var(--bg-secondary-darker);
+}
+
+.nav-list a span {
+    position: absolute;
+    left: -500px;
+    opacity: 0;
+    transition: var(--transition-speed);
+}
+
+.fa-crown {
+    font-size: 30px !important;
+}
+
+
+/* WELCOME */
+
+.welcome-section {
+    height: 100vh;
+    justify-content: center;
+}
+
+.welcome-section div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: var(--bg-secondary);
+}
+
+.welcome-section div h1 {
+    color: var(--bg-main);
+}
+
+.welcome-section div p {
+    font-size: 30px;
+    font-style: italic;
+}
+
 
 
 /* CONTAINER AND CARDS */
@@ -68,6 +165,7 @@ body {
     flex-direction: column;
     align-items: center;
     width: 100%;
+    padding-left: 5rem;
 }
 
 .container h1 {
@@ -97,7 +195,53 @@ body {
     transition: all 0.2s;
 }
 
+.beer-card * {
+    pointer-events: none;
+}
+
 .beer-card:hover {
     transform: scale(1.2);
     box-shadow: 0 0 20px var(--bg-secondary);
+    backdrop-filter: blur(20px) contrast(40%);
+}
+
+
+@media screen and (max-width: 800px) {
+    .container {
+        padding: 20px;
+    }
+
+    .navbar {
+        bottom: 0;
+        width: 100vw;
+        height: 5rem;
+        transition: all 0.03ms;
+        z-index: 20;
+    }
+
+    .navbar:hover {
+        width: 100vw;
+    }
+
+    .nav-list {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .nav-list .home {
+        display: none;
+    }
+
+    .navbar:hover .nav-list a {
+        width: 5rem;
+    }
+
+    .nav-list a span {
+        display: none;
+    }
+
+    .beer-card:hover {
+        transform: scale(1.05);
+    }
 }
