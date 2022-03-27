@@ -200,7 +200,7 @@ body {
 }
 
 .beer-card:hover {
-    transform: scale(1.2);
+    transform: scale(1.1);
     box-shadow: 0 0 20px var(--bg-secondary);
     backdrop-filter: blur(20px) contrast(40%);
 }
