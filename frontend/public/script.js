@@ -88,7 +88,7 @@ const navAnchorsHTML = () => {
 //FETCH
 
 const getAllData = async () => {
-    const request = await fetch('./pub/data.json');
+    const request = await fetch('./public/data.json');
     const result = await request.json();
     return result;
 };
@@ -123,6 +123,8 @@ const init = async () => {
     //Event Listeners
     document.addEventListener('click', cardGoogleSearch);
 
+
+    console.log(new Date(Date.now()));
 
 };
 
