@@ -50,6 +50,24 @@ body {
     background-color: var(--bg-main);
 }
 
+/* SCROLL BAR RE-STYLING */
+
+body::-webkit-scrollbar {
+    width: 15px;
+}
+  
+body::-webkit-scrollbar-track {
+    background: var(--bg-main);
+}
+  
+body::-webkit-scrollbar-thumb {
+    background: var(--bg-secondary);
+}
+
+.change-overflow {
+    overflow: hidden;
+}
+
 /* NAVBAR */
 
 .navbar {
@@ -205,6 +223,137 @@ body {
     backdrop-filter: blur(20px) contrast(40%);
 }
 
+
+
+/* HIGHLIGHTING CARDS */
+
+
+.highlight-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+    background-color: #f48d06c9;
+}
+
+.highlight-container {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    max-width: 1200px;
+    padding: 40px;
+    background-color: var(--bg-main);
+    color: var(--bg-secondary);
+}
+
+/* CARD GENERAL INFO */
+
+.card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    border-right: 1px solid var(--bg-secondary);
+}
+
+
+/* RATE-AND-COMMENTS DIV */
+
+.rate-and-comments {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+}
+
+
+/* STAR SYSTEM */
+
+.highlight-container input[name="stars"] {
+    appearance: none;
+}
+.rate-stars {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 3px;
+    transform: rotateY(180deg);
+}
+
+.rate-stars .star {
+    color: var(--bg-main);
+    cursor: pointer;
+    -webkit-text-stroke-width: 1.5px;
+    -webkit-text-stroke-color: var(--bg-secondary);
+    transition: 0.3s;
+}
+
+.rate-stars input[name="stars"]:checked ~ label .star,
+.rate-stars input[name="stars"]:hover ~ label .star {
+    color: var(--bg-secondary);
+}
+
+.rate-stars .avg-rating {
+    padding-left: 5px;
+    font-size: 20px;
+    transform: rotateY(-180deg);
+}
+
+/* COMMENTS SECTION */
+
+.comment-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+.comment-section .comment {
+    padding: 10px;
+    color: var(--bg-main);
+    font-size: 18px;
+    font-weight: 500;
+    background-color: var(--bg-secondary);
+}
+
+.comment-section textarea {
+    min-width: 400px;
+    padding-top: 5px;
+    padding-inline: 10px;
+    color: var(--bg-main);
+    font-size: 18px;
+    font-weight: 500;
+    background-color: var(--bg-secondary);
+
+}
+.comment-section textarea::placeholder {
+    color: var(--bg-main);
+}
+
+
+textarea::-webkit-scrollbar {
+    width: 8px;
+    height: 3px;
+}
+  
+textarea::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+  
+textarea::-webkit-scrollbar-thumb {
+    background: var(--bg-main);
+}
+
+.comment-section .separator {
+    height: 1px;
+    background-color: var(--bg-secondary);
+}
+
+
+/* MEDIA QUERY FOR SMALL SCREEN */
 
 @media screen and (max-width: 800px) {
     .container {

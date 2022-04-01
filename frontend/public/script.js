@@ -1,3 +1,12 @@
+class GatherCardInfo {
+    constructor(title, sub, text) {
+        this.title = title;
+        this.sub = sub;
+        this.text = text
+    }
+}
+
+
 // Components
 const navbarHTML = (recNavAnchorsHTML) => {
     return `
@@ -83,6 +92,44 @@ const navAnchorsHTML = () => {
     }).join('');
 };
 
+const highlightCardHTML = (recCard) => {
+    return `
+    <div class="card-info">
+        <h2>${recCard.title}</h2>
+        <h3>${recCard.sub}</h3>
+        <p>${recCard.text}</p>
+    </div>
+    <div class="rate-and-comments">
+        <div class="rate-stars">
+            <p class="avg-rating">4.3</p>
+            <input type="radio" name="stars" id="star5"><label for="star5"><i class="material-icons-outlined star">star</i></label>
+            <input type="radio" name="stars" id="star4"><label for="star4"><i class="material-icons-outlined star">star</i></label>
+            <input type="radio" name="stars" id="star3"><label for="star3"><i class="material-icons-outlined star">star</i></label>
+            <input type="radio" name="stars" id="star2"><label for="star2"><i class="material-icons-outlined star">star</i></label>
+            <input type="radio" name="stars" id="star1"><label for="star1"><i class="material-icons-outlined star">star</i></label>
+        </div>
+        <div class="comment-section">
+            <textarea placeholder="Write a comment..." type="text-area" name="write-comment" rows="3"></textarea>
+            <div class="separator"></div>
+            <div class="comment">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure</div>
+            <div class="comment">There are manyof Lorem Ipsum available, going to use a passage of Lorem Ipsum, you need to be sure</div>
+        </div>
+    </div>    
+    `;
+};
+
+
+const highlightCardRenderer = (recHighlightCardHTML) => {
+    root.insertAdjacentHTML("beforeend", `
+            <section class="highlight-overlay">
+                <div class="highlight-container">
+                    ${recHighlightCardHTML}
+                </div>
+            </section>
+            `)
+};
+
+
 
 
 //FETCH
@@ -93,17 +140,36 @@ const getAllData = async () => {
     return result;
 };
 
-//HANDLERS
 
-const cardGoogleSearch = (e) => {
+
+//CLICK EVENT HANDLERS 
+
+const highlightCardHandler = (e) => {
     console.log(e.target);
+
     if (e.target.classList.contains('beer-card')){
-        window.open(`https://www.google.com/search?q=${Array.from(e.target.children).map(child => child.textContent === '-Theoden' ? 'Theoden' : child.textContent).join(' ')}`, '_blank');
+        // gather the info from the current card to transfer into the highlight
+        const currentCard = new GatherCardInfo(e.target.children[0].textContent, e.target.children[1].textContent, e.target.children[2].textContent)
+
+        document.querySelector('body').classList.toggle('change-overflow');
+        // render the highlighted card
+        highlightCardRenderer(highlightCardHTML(currentCard));
     }
 };
 
+const closeHighlightedCard = (e) => {
+    let classList = e.target.classList;
+    if (classList.contains('highlight-overlay')){
+        
+        document.querySelector('.highlight-overlay').remove();
+
+        document.querySelector('body').classList.toggle('change-overflow');
+    }  
+};
 
 
+// THIS IS FOR THE GOOGLE SEARCH!!!
+// window.open(`https://www.google.com/search?q=${Array.from(e.target.children).map(child => child.textContent === '-Theoden' ? 'Theoden' : child.textContent).join(' ')}`, '_blank');
 
 
 const init = async () => {
@@ -121,10 +187,10 @@ const init = async () => {
 
 
     //Event Listeners
-    document.addEventListener('click', cardGoogleSearch);
+    document.addEventListener('click', highlightCardHandler);
+    document.addEventListener('click', closeHighlightedCard);
 
 
-    console.log(new Date(Date.now()));
 
 };
 
