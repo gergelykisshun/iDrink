@@ -109,7 +109,11 @@ const highlightCardHTML = (recCard) => {
             <input type="radio" name="stars" id="star1"><label for="star1"><i class="material-icons-outlined star">star</i></label>
         </div>
         <div class="comment-section">
+            <form class="form-comment">
+            <input type="text" name="name">
             <textarea placeholder="Write a comment..." type="text-area" name="write-comment" rows="3"></textarea>
+            <button>Send</button>
+            </form>
             <div class="separator"></div>
             <div class="comment">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure</div>
             <div class="comment">There are manyof Lorem Ipsum available, going to use a passage of Lorem Ipsum, you need to be sure</div>
@@ -160,7 +164,7 @@ const highlightCardHandler = (e) => {
 const closeHighlightedCard = (e) => {
     let classList = e.target.classList;
     if (classList.contains('highlight-overlay')){
-        
+
         document.querySelector('.highlight-overlay').remove();
 
         document.querySelector('body').classList.toggle('change-overflow');
