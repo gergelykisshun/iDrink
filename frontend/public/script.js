@@ -1,3 +1,5 @@
+// Classes
+
 class GatherCardInfo {
     constructor(title, sub, text) {
         this.title = title;
@@ -98,6 +100,7 @@ const highlightCardHTML = (recCard) => {
         <h2>${recCard.title}</h2>
         <h3>${recCard.sub}</h3>
         <p>${recCard.text}</p>
+        <button class="show-me-btn btn-style">Show me!</button>
     </div>
     <div class="rate-and-comments">
         <div class="rate-stars">
@@ -110,9 +113,19 @@ const highlightCardHTML = (recCard) => {
         </div>
         <div class="comment-section">
             <form class="form-comment">
-            <input type="text" name="name">
-            <textarea placeholder="Write a comment..." type="text-area" name="write-comment" rows="3"></textarea>
-            <button>Send</button>
+                <input placeholder="Name" class="input-style name-input" type="text" name="name" required>
+                <label for="select" class="select-avatar">Avatar
+                    <select id="select" class="select-avatar input-style" required>
+                        <option value="😀">😀</option> 
+                        <option value="🤣">🤣</option> 
+                        <option value="😎">😎</option> 
+                        <option value="😶">😶</option> 
+                        <option value="🤗">🤗</option> 
+                        <option value="🤩">🤩</option> 
+                    </select>
+                </label>
+                <textarea class="input-style" placeholder="Write a comment..." type="text-area" name="write-comment" rows="3" required></textarea>
+                <button class="btn-style">Send</button>
             </form>
             <div class="separator"></div>
             <div class="comment">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure</div>
@@ -145,11 +158,41 @@ const getAllData = async () => {
 };
 
 
+// UTILITY FUNCTIONS
+
+const inputFieldChecker = (form) => {
+
+    const nameOfCard = document.querySelector('.card-info h2').textContent;
+    const textAreaValue = form.querySelector('textarea').value;
+    const inputValue = form.querySelector('input').value;
+    const selectValue = form.querySelector('select').value;
+    const dateToSend = new Date();
+    const currentDate = `${dateToSend.getFullYear()}-${dateToSend.getMonth() + 1}-${dateToSend.getDate()}`;
+
+
+    if (!textAreaValue){
+        return false;
+    } else if (!inputValue){
+        return false;
+    } else if (!selectValue){
+        return false;
+    } else {
+        return [
+            nameOfCard,
+            textAreaValue,
+            inputValue,
+            selectValue,
+            currentDate
+        ]
+    
+    }
+};
+
+
 
 //CLICK EVENT HANDLERS 
 
 const highlightCardHandler = (e) => {
-    console.log(e.target);
 
     if (e.target.classList.contains('beer-card')){
         // gather the info from the current card to transfer into the highlight
@@ -164,11 +207,56 @@ const highlightCardHandler = (e) => {
 const closeHighlightedCard = (e) => {
     let classList = e.target.classList;
     if (classList.contains('highlight-overlay')){
-
+        
         document.querySelector('.highlight-overlay').remove();
-
+        
         document.querySelector('body').classList.toggle('change-overflow');
     }  
+};
+
+const showMeHandler = (e) => {
+    let classList = e.target.classList;
+    if (classList.contains('show-me-btn')){
+        window.open(`https://www.google.com/search?q=${Array.from(e.target.parentNode.children).map(child => child.textContent === '-Theoden' ? 'Theoden' : child.textContent).slice(0, -1).join(' ')}`, '_blank');
+    }
+
+}
+
+const sendCommentHandler = (e) => {
+    let classList = e.target.classList;
+    if (classList.contains('btn-style')){
+        e.preventDefault();
+        console.log('posted a comment');
+
+        // check input fields and organize them in an object
+        let checkResultArray = inputFieldChecker(document.querySelector('.form-comment'));
+        if (!checkResultArray){
+            alert('Please fill all the fields!');
+        } else {
+            // put them in FormData
+            const dataToSend = new FormData();
+            dataToSend.append( 'comment-info', JSON.stringify(checkResultArray) );
+            
+            // post them on the data on the server
+            fetch('/comment-upload', {
+                method: 'POST',
+                body: dataToSend
+            }).then(data => {
+                if (data.status === 200){
+                    // if successful render the comment
+                    console.log('post successful!')
+                }
+            }).catch(error => {
+                alert(error);
+
+            });
+            
+            
+        }
+
+
+
+    };
 };
 
 
@@ -181,7 +269,7 @@ const init = async () => {
     
     //Get Data
     const allData = await getAllData();
-    console.log(allData);
+
 
     //Create HTML
     root.insertAdjacentHTML('beforeend', navbarHTML(navAnchorsHTML()));
@@ -193,6 +281,8 @@ const init = async () => {
     //Event Listeners
     document.addEventListener('click', highlightCardHandler);
     document.addEventListener('click', closeHighlightedCard);
+    document.addEventListener('click', showMeHandler);
+    document.addEventListener('click', sendCommentHandler);
 
 
 

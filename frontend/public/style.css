@@ -249,6 +249,22 @@ body::-webkit-scrollbar-thumb {
     color: var(--bg-secondary);
 }
 
+.btn-style {
+    width: 120px;
+    height: 30px;
+    background: linear-gradient( var(--bg-secondary) 0%, var(--bg-secondary-darkest) 100%);
+    color: var(--bg-main);
+    font-size: 16px;
+}
+
+.input-style {
+    padding: 5px 10px;
+    color: var(--bg-main);
+    font-size: 18px;
+    font-weight: 500;
+    background-color: var(--bg-secondary);
+}
+
 /* CARD GENERAL INFO */
 
 .card-info {
@@ -304,10 +320,22 @@ body::-webkit-scrollbar-thumb {
 
 /* COMMENTS SECTION */
 
+
 .comment-section {
     display: flex;
     flex-direction: column;
     gap: 10px;
+}
+
+.comment-section .form-comment {
+    position: relative;
+    display: grid;
+    gap: 10px;
+    grid-auto-columns: 1fr;
+    grid-template-areas: 
+    "text-comment text-comment text-comment"
+    "name avatar send-btn"
+    ;
 }
 
 
@@ -319,17 +347,32 @@ body::-webkit-scrollbar-thumb {
     background-color: var(--bg-secondary);
 }
 
-.comment-section textarea {
-    min-width: 400px;
-    padding-top: 5px;
-    padding-inline: 10px;
-    color: var(--bg-main);
-    font-size: 18px;
-    font-weight: 500;
-    background-color: var(--bg-secondary);
-
+.form-comment .name-input {
+    grid-area: name;
+    width: 100%;
 }
-.comment-section textarea::placeholder {
+.form-comment .select-avatar {
+    grid-area: avatar;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: var(--bg-main);
+}
+
+.form-comment button {
+    grid-area: send-btn;
+    position: absolute;
+    right: 0;
+}
+
+
+
+.comment-section textarea {
+    grid-area: text-comment;
+    min-width: 400px;
+}
+.comment-section textarea::placeholder,
+.comment-section input::placeholder {
     color: var(--bg-main);
 }
 
@@ -346,6 +389,28 @@ textarea::-webkit-scrollbar-track {
 textarea::-webkit-scrollbar-thumb {
     background: var(--bg-main);
 }
+
+/* .comment-section .select-avatar option[value="male-1"] {
+    background-image: url('./img-avatars/male-1.jpg');
+    background-size: cover;
+}
+.comment-section .select-avatar option[value="male-2"] {
+    background-image: url('./img-avatars/male-2.jpg');
+}
+.comment-section .select-avatar option[value="male-3"] {
+    background-image: url('./img-avatars/male-3.jpg');
+}
+.comment-section .select-avatar option[value="female-1"] {
+    background-image: url('./img-avatars/female-1.jpg');
+}
+.comment-section .select-avatar option[value="female-2"] {
+    background-image: url('./img-avatars/female-2.jpg');
+}
+.comment-section .select-avatar option[value="female-3"] {
+    background-image: url('./img-avatars/female-3.jpg');
+} */
+
+
 
 .comment-section .separator {
     height: 1px;
