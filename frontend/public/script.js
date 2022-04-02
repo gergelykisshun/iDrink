@@ -125,7 +125,7 @@ const highlightCardHTML = (recCard) => {
                     </select>
                 </label>
                 <textarea class="input-style" placeholder="Write a comment..." type="text-area" name="write-comment" rows="3" required></textarea>
-                <button class="btn-style">Send</button>
+                <button class="send-btn btn-style">Send</button>
             </form>
             <div class="separator"></div>
             <div class="comment-container">
@@ -255,7 +255,7 @@ const showMeHandler = (e) => {
 
 const sendCommentHandler = (e) => {
     let classList = e.target.classList;
-    if (classList.contains('btn-style')){
+    if (classList.contains('send-btn')){
         e.preventDefault();
 
         // check input fields and organize them in an object
