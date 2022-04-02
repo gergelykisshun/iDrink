@@ -128,8 +128,8 @@ const highlightCardHTML = (recCard) => {
                 <button class="btn-style">Send</button>
             </form>
             <div class="separator"></div>
-            <div class="comment">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure</div>
-            <div class="comment">There are manyof Lorem Ipsum available, going to use a passage of Lorem Ipsum, you need to be sure</div>
+            <div class="comment-container">
+            </div>
         </div>
     </div>    
     `;
@@ -146,6 +146,18 @@ const highlightCardRenderer = (recHighlightCardHTML) => {
             `)
 };
 
+const commentHTML = (recComment) => {
+    return `
+    <div class="comment">
+        <div class="commenter-info">
+            <h3>${recComment.username}</h3>
+            <h4>${recComment.avatar}</h4>
+            <p>${recComment.date}</p>
+        </div>
+        <p class="comment-text">${recComment.comment}<p>
+    </div>
+    `
+};
 
 
 
@@ -177,15 +189,24 @@ const inputFieldChecker = (form) => {
     } else if (!selectValue){
         return false;
     } else {
-        return [
-            nameOfCard,
-            textAreaValue,
-            inputValue,
-            selectValue,
-            currentDate
-        ]
+        return {
+            title: nameOfCard,
+            comment: textAreaValue,
+            username: inputValue,
+            avatar: selectValue,
+            date: currentDate
+        }
     
     }
+};
+
+const renderAllComments = (title, comments) => {
+
+    const filteredComments = comments.map( comment => JSON.parse(comment['comment-info']) ).filter( comment => comment.title === title);
+
+    const commentContainer = document.querySelector('.comment-container');
+    commentContainer.innerHTML = '';
+    commentContainer.insertAdjacentHTML("beforeend", filteredComments.map( comment => commentHTML(comment) ).join(''));
 };
 
 
@@ -201,6 +222,16 @@ const highlightCardHandler = (e) => {
         document.querySelector('body').classList.toggle('change-overflow');
         // render the highlighted card
         highlightCardRenderer(highlightCardHTML(currentCard));
+
+        // render comments
+        fetch('/comment-download').then(comments => {
+            return comments.json();
+        }).then (result => {
+            const recAllComments = result;
+            renderAllComments(e.target.children[0].textContent, recAllComments);
+        }).catch(error => {
+            alert(error);
+        });
     }
 };
 
@@ -226,7 +257,6 @@ const sendCommentHandler = (e) => {
     let classList = e.target.classList;
     if (classList.contains('btn-style')){
         e.preventDefault();
-        console.log('posted a comment');
 
         // check input fields and organize them in an object
         let checkResultArray = inputFieldChecker(document.querySelector('.form-comment'));
@@ -244,7 +274,14 @@ const sendCommentHandler = (e) => {
             }).then(data => {
                 if (data.status === 200){
                     // if successful render the comment
-                    console.log('post successful!')
+                    fetch('/comment-download').then(comments => {
+                        return comments.json();
+                    }).then (result => {
+                        const recAllComments = result;
+                        renderAllComments(checkResultArray.title, recAllComments);
+                    }).catch(error => {
+                        alert(error);
+                    });
                 }
             }).catch(error => {
                 alert(error);

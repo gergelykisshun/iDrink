@@ -52,15 +52,18 @@ body {
 
 /* SCROLL BAR RE-STYLING */
 
-body::-webkit-scrollbar {
+body::-webkit-scrollbar,
+.highlight-container::-webkit-scrollbar {
     width: 15px;
 }
   
-body::-webkit-scrollbar-track {
+body::-webkit-scrollbar-track,
+.highlight-container::-webkit-scrollbar-track {
     background: var(--bg-main);
 }
   
-body::-webkit-scrollbar-thumb {
+body::-webkit-scrollbar-thumb,
+.highlight-container::-webkit-scrollbar-thumb {
     background: var(--bg-secondary);
 }
 
@@ -243,10 +246,12 @@ body::-webkit-scrollbar-thumb {
 .highlight-container {
     display: grid;
     grid-template-columns: 300px 1fr;
+    max-height: 90vh;
     max-width: 1200px;
     padding: 40px;
     background-color: var(--bg-main);
     color: var(--bg-secondary);
+    overflow: auto;
 }
 
 .btn-style {
@@ -339,14 +344,6 @@ body::-webkit-scrollbar-thumb {
 }
 
 
-.comment-section .comment {
-    padding: 10px;
-    color: var(--bg-main);
-    font-size: 18px;
-    font-weight: 500;
-    background-color: var(--bg-secondary);
-}
-
 .form-comment .name-input {
     grid-area: name;
     width: 100%;
@@ -367,12 +364,12 @@ body::-webkit-scrollbar-thumb {
 
 
 
-.comment-section textarea {
+.form-comment textarea {
     grid-area: text-comment;
     min-width: 400px;
 }
-.comment-section textarea::placeholder,
-.comment-section input::placeholder {
+.form-comment textarea::placeholder,
+.form-comment input::placeholder {
     color: var(--bg-main);
 }
 
@@ -409,6 +406,36 @@ textarea::-webkit-scrollbar-thumb {
 .comment-section .select-avatar option[value="female-3"] {
     background-image: url('./img-avatars/female-3.jpg');
 } */
+
+.comment-container {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 1fr;
+}
+
+.comment-container .comment {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    padding: 10px;
+    color: var(--bg-main);
+    font-size: 18px;
+    font-weight: 500;
+    background-color: var(--bg-secondary);
+}
+
+.comment .comment-text {
+    padding: 5px;
+}
+
+.commenter-info {
+    padding: 5px;
+    border-right: 1px solid var(--bg-main);
+}
+
+.commenter-info h3,
+.commenter-info h4 {
+    display: inline-block;
+}
 
 
 

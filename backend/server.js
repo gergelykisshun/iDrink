@@ -16,6 +16,16 @@ app.get('/', (req, res) => {
 	res.sendFile(absolutePathIndex);
 });
 
+app.get('/comment-download', (req, res) => {
+	try {
+		const allComments = getFile(absolutePathCommentsJSON);
+		res.status(200).send(allComments);
+	} catch (error) {
+		console.log(error);
+	}
+
+});
+
 app.post('/comment-upload', (req, res) => {
 	console.log(req.body);
 	try {
