@@ -303,7 +303,7 @@ const sendStarHandler = (e) => {
         const starNbr = e.target.parentNode.getAttribute('for').slice(-1);
         // gather data (title of card, how many stars, create user cookie)
         
-        // if( !localStorage.getItem(`${titleOfCard}`) ){
+        if( !localStorage.getItem(`${titleOfCard}`) ){
             localStorage.setItem(`${titleOfCard}`, `voted`);
 
             const starToSend = new FormData();
@@ -336,9 +336,9 @@ const sendStarHandler = (e) => {
             })
 
 
-        // } else {
-        //     alert('You cant cast more votes on this item!');
-        // }
+        } else {
+            alert('You cant cast more votes on this item!');
+        }
 
         console.log(localStorage)
 
