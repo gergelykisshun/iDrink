@@ -223,6 +223,21 @@ const highlightCardHandler = (e) => {
         // render the highlighted card
         highlightCardRenderer(highlightCardHTML(currentCard));
 
+        // render average stars
+        fetch('/get-stars').then(result => {
+            return result.json()
+        }).then( starData => {
+            // filter it for current card
+            const filteredStarData = starData.filter(vote => vote.title === currentCard.title);
+            // update average stsar rating on card
+            const averageRating = ( filteredStarData.reduce( (total, cur) => {
+                return total += parseInt(cur.star);
+            }, 0) ) / filteredStarData.length;
+
+            // render new average
+            document.querySelector('.avg-rating').textContent = `${averageRating.toPrecision(2)}`;
+        });
+
         // render comments
         fetch('/comment-download').then(comments => {
             return comments.json();
