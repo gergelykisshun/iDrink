@@ -374,7 +374,7 @@ const sendStarHandler = (e) => {
                 if(data.status === 200){
                         // scott meme
                         messageRenderer(`<img class="star-meme" src="./public/star-meme/star${starNbr}.gif">`);
-                        setTimeout(() => closeMessageHandler(), 2000);
+                        setTimeout(() => {document.querySelector('.message-overlay').remove();}, 4000);
                         // fetch all stars
                     fetch('/get-stars').then(result => {
                         return result.json()
