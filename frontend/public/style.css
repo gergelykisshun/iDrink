@@ -244,8 +244,7 @@ body::-webkit-scrollbar-thumb,
     background-color: #f48d06c9;
 }
 
-.highlight-container,
-.message-container {
+.highlight-container {
     display: grid;
     grid-template-columns: 300px 1fr;
     max-height: 90vh;
@@ -501,5 +500,14 @@ textarea::-webkit-scrollbar-thumb {
 
     .beer-card:hover {
         transform: scale(1.05);
+    }
+
+    .highlight-container {
+        grid-template-columns: 1fr;
+    }
+
+    .card-info {
+        border-right: unset;
+        border-bottom: 1px solid var(--bg-secondary);
     }
 }
