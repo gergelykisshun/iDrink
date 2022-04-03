@@ -256,6 +256,21 @@ body::-webkit-scrollbar-thumb,
     overflow: auto;
 }
 
+.message-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 1200px;
+    padding: 40px;
+    background-color: var(--bg-main);
+    color: var(--bg-secondary);
+}
+
+.star-meme {
+    width: 400px;
+    object-fit: cover;
+}
+
 .btn-style {
     width: 120px;
     height: 30px;
