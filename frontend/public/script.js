@@ -296,6 +296,55 @@ const sendCommentHandler = (e) => {
     };
 };
 
+const sendStarHandler = (e) => {
+    let classList = e.target.classList;
+    if (classList.contains('star')){
+        const titleOfCard = e.target.parentNode.parentNode.parentNode.parentNode.querySelector('.card-info h2').textContent;
+        const starNbr = e.target.parentNode.getAttribute('for').slice(-1);
+        // gather data (title of card, how many stars, create user cookie)
+        
+        // if( !localStorage.getItem(`${titleOfCard}`) ){
+            localStorage.setItem(`${titleOfCard}`, `voted`);
+
+            const starToSend = new FormData();
+            starToSend.append('star', `${starNbr}`);
+            starToSend.append('title', titleOfCard);
+            
+            fetch('/star-upload', {
+                method: 'POST',
+                body: starToSend
+            }).then(data => {
+                if(data.status === 200){
+                        // fetch all stars
+                    fetch('/get-stars').then(result => {
+                        return result.json()
+                    }).then( starData => {
+                        // filter it for current card
+                        const filteredStarData = starData.filter(vote => vote.title === titleOfCard);
+                        // update average star rating on card
+                        const averageRating = ( filteredStarData.reduce( (total, cur) => {
+                            return total += parseInt(cur.star);
+                        }, 0) ) / filteredStarData.length;
+
+                        // render new average
+                        e.target.parentNode.parentNode.querySelector('.avg-rating').textContent = `${averageRating.toPrecision(2)}`;
+                    })
+
+                }
+            }).catch(error => {
+                alert('something went wrong during posting');
+            })
+
+
+        // } else {
+        //     alert('You cant cast more votes on this item!');
+        // }
+
+        console.log(localStorage)
+
+    }
+};
+
 
 // THIS IS FOR THE GOOGLE SEARCH!!!
 // window.open(`https://www.google.com/search?q=${Array.from(e.target.children).map(child => child.textContent === '-Theoden' ? 'Theoden' : child.textContent).join(' ')}`, '_blank');
@@ -320,6 +369,7 @@ const init = async () => {
     document.addEventListener('click', closeHighlightedCard);
     document.addEventListener('click', showMeHandler);
     document.addEventListener('click', sendCommentHandler);
+    document.addEventListener('click', sendStarHandler);
 
 
 
