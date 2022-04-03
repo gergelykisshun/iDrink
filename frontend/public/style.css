@@ -231,7 +231,8 @@ body::-webkit-scrollbar-thumb,
 /* HIGHLIGHTING CARDS */
 
 
-.highlight-overlay {
+.highlight-overlay,
+.message-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -243,7 +244,8 @@ body::-webkit-scrollbar-thumb,
     background-color: #f48d06c9;
 }
 
-.highlight-container {
+.highlight-container,
+.message-container {
     display: grid;
     grid-template-columns: 300px 1fr;
     max-height: 90vh;

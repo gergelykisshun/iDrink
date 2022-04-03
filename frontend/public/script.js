@@ -1,5 +1,6 @@
+/* -------------------------------------------------------------------------- */
 // Classes
-
+/* -------------------------------------------------------------------------- */
 class GatherCardInfo {
     constructor(title, sub, text) {
         this.title = title;
@@ -8,8 +9,9 @@ class GatherCardInfo {
     }
 }
 
-
+/* -------------------------------------------------------------------------- */
 // Components
+/* -------------------------------------------------------------------------- */
 const navbarHTML = (recNavAnchorsHTML) => {
     return `
     <nav class="navbar">
@@ -146,6 +148,17 @@ const highlightCardRenderer = (recHighlightCardHTML) => {
             `)
 };
 
+const messageRenderer = (msg) => {
+    root.insertAdjacentHTML("beforeend", `
+    <section class="message-overlay">
+        <div class="message-container">
+            ${msg}
+        </div>
+    </section>
+    `)
+
+}
+
 const commentHTML = (recComment) => {
     return `
     <div class="comment">
@@ -160,18 +173,18 @@ const commentHTML = (recComment) => {
 };
 
 
-
+/* -------------------------------------------------------------------------- */
 //FETCH
-
+/* -------------------------------------------------------------------------- */
 const getAllData = async () => {
     const request = await fetch('./public/data.json');
     const result = await request.json();
     return result;
 };
 
-
+/* -------------------------------------------------------------------------- */
 // UTILITY FUNCTIONS
-
+/* -------------------------------------------------------------------------- */
 const inputFieldChecker = (form) => {
 
     const nameOfCard = document.querySelector('.card-info h2').textContent;
@@ -210,9 +223,9 @@ const renderAllComments = (title, comments) => {
 };
 
 
-
+/* -------------------------------------------------------------------------- */
 //CLICK EVENT HANDLERS 
-
+/* -------------------------------------------------------------------------- */
 const highlightCardHandler = (e) => {
 
     if (e.target.classList.contains('beer-card')){
@@ -222,6 +235,15 @@ const highlightCardHandler = (e) => {
         document.querySelector('body').classList.toggle('change-overflow');
         // render the highlighted card
         highlightCardRenderer(highlightCardHTML(currentCard));
+
+        // render stars if vote was already casted
+
+        if( Object.keys(localStorage).find(title => title === currentCard.title) ){
+            const numberOfStars = localStorage[currentCard.title];
+
+            document.getElementById(`star${numberOfStars}`).checked = true;
+        }
+    
 
         // render average stars
         fetch('/get-stars').then(result => {
@@ -235,7 +257,12 @@ const highlightCardHandler = (e) => {
             }, 0) ) / filteredStarData.length;
 
             // render new average
-            document.querySelector('.avg-rating').textContent = `${averageRating.toPrecision(2)}`;
+            if (filteredStarData.length === 0){
+                document.querySelector('.avg-rating').textContent = `Be the first to rate this!`;
+
+            } else {
+                document.querySelector('.avg-rating').textContent = `${averageRating.toPrecision(2)}`;
+            };
         });
 
         // render comments
@@ -258,6 +285,21 @@ const closeHighlightedCard = (e) => {
         
         document.querySelector('body').classList.toggle('change-overflow');
     }  
+};
+
+const closeMessageHandler = (e) => {
+    let classList = e.target.classList;
+    if (classList.contains('message-overlay')){
+
+        document.querySelector('.message-overlay').remove();
+
+        const curTitle = document.querySelector('.card-info h2').textContent;
+        if( Object.keys(localStorage).find(title => title === curTitle) ){
+            const numberOfStars = localStorage[curTitle];
+
+            document.getElementById(`star${numberOfStars}`).checked = true;
+        }
+    }
 };
 
 const showMeHandler = (e) => {
@@ -319,7 +361,7 @@ const sendStarHandler = (e) => {
         // gather data (title of card, how many stars, create user cookie)
         
         if( !localStorage.getItem(`${titleOfCard}`) ){
-            localStorage.setItem(`${titleOfCard}`, `voted`);
+            localStorage.setItem(`${titleOfCard}`, `${starNbr}`);
 
             const starToSend = new FormData();
             starToSend.append('star', `${starNbr}`);
@@ -352,7 +394,7 @@ const sendStarHandler = (e) => {
 
 
         } else {
-            alert('You cant cast more votes on this item!');
+            messageRenderer('Cannot cast more votes on one item!');        
         }
 
         console.log(localStorage)
@@ -361,9 +403,7 @@ const sendStarHandler = (e) => {
 };
 
 
-// THIS IS FOR THE GOOGLE SEARCH!!!
-// window.open(`https://www.google.com/search?q=${Array.from(e.target.children).map(child => child.textContent === '-Theoden' ? 'Theoden' : child.textContent).join(' ')}`, '_blank');
-
+/* -------------------------------------------------------------------------- */
 
 const init = async () => {
     const root = document.getElementById('root');
@@ -385,6 +425,7 @@ const init = async () => {
     document.addEventListener('click', showMeHandler);
     document.addEventListener('click', sendCommentHandler);
     document.addEventListener('click', sendStarHandler);
+    document.addEventListener('click', closeMessageHandler);
 
 
 
