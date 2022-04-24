@@ -1,9 +1,11 @@
-iDrink App - 
+# iDrink App
+Frontend created with JS
+Backend API created with Express.js 
 
-Click on the cards for more info.
+## Features
 
-Leave comments and rate your favourite drinks.
+- Top 10 drinks listed, from various types
+- Click on the cards for more info.
+- Leave comments and rate your favourite drinks.
 
-https://www.valentinog.com/blog/cookies/
-
-https://blog.logrocket.com/javascript-developer-guide-browser-cookies/
+- Comments and ratings stored on the API
